@@ -20,6 +20,8 @@ public class StripOptions
 
     public string ApiKey { get; set; } = string.Empty;
 
+    public string[] IgnoredAssemblies { get; set; } = [];
+
     [JsonIgnore]
     public bool IsValid => PackageName != string.Empty
         && PackageAuthor != string.Empty

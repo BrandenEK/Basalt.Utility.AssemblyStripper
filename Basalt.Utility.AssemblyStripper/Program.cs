@@ -35,7 +35,7 @@ internal class Program
 
         // Get all dlls to strip
         Logger.Info($"Getting all dlls from {options.AssemblyPath}");
-        var dlls = GetAssemblyPaths(options.AssemblyPath);
+        var dlls = GetAssemblyPaths(options);
 
         // Strip all found assemblies
         StripAssemblies(dlls);
@@ -93,9 +93,10 @@ internal class Program
         return options;
     }
 
-    static IEnumerable<string> GetAssemblyPaths(string directory)
+    static IEnumerable<string> GetAssemblyPaths(StripOptions options)
     {
-        return Directory.GetFiles(directory).Where(x => x.EndsWith(".dll"));
+        return Directory.GetFiles(options.AssemblyPath)
+            .Where(x => x.EndsWith(".dll") && !options.IgnoredAssemblies.Any(y => x.EndsWith(y)));
     }
 
     static void StripAssemblies(IEnumerable<string> paths)
